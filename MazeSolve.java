@@ -16,7 +16,7 @@ class Maze {
     void debug(String s) {
         System.out.print(s);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         }
         catch (Exception ignored) {}
     }
@@ -79,9 +79,9 @@ class Maze {
                 cell_stack[++stack_pointer] = current_cell;
                 visited_cells++;
             }
-            this.print(VISITED);
+//            this.print(VISITED);
             try {
-                Thread.sleep(300);
+                Thread.sleep(3);
             }
             catch (Exception e) {}
         }
@@ -110,25 +110,25 @@ class Maze {
             switch (result) {
                 // EAST, make sure we're not at the edge.
                 case 0 : if (walls[0] == 1) {
-                            debug("going: " + d[0] + "\n\n");
+//                            debug("going: " + d[0] + "\n\n");
                             return current + 1;
                          }
                          break;
                 // SOUTH
                 case 1 : if (walls[1] == 1) {
-                            debug("going: " + d[1] + "\n\n");
+//                            debug("going: " + d[1] + "\n\n");
                             return current + SIZE;
                          }
                          break;
                 // WEST
                 case 2 : if (walls[2] == 1) {
-                            debug("going: " + d[2] + "\n\n");
+//                            debug("going: " + d[2] + "\n\n");
                             return current - 1;
                          }
                          break;
                 // NORTH
                 case 3 : if (walls[3] == 1) {
-                            debug("going: " + d[3] + "\n\n");
+//                            debug("going: " + d[3] + "\n\n");
                             return current - SIZE;
                          }
                          break;
@@ -159,7 +159,7 @@ class Maze {
     }
 
     boolean is_connected(int cell_a, int direction) {
-        debug("is_connected(" + cell_a + ", " + d[direction] + ") ");
+//        debug("is_connected(" + cell_a + ", " + d[direction] + ") ");
         int cell_b = -1;
         if (direction == 0)
             cell_b = cell_a + 1;
@@ -175,89 +175,89 @@ class Maze {
         }
        
         boolean result = maze[VISITED][cell_b] == EXPLORED;
-        debug(result?"yes\n":"no\n");
+//        debug(result?"yes\n":"no\n");
         return result;
     }
 
-    boolean bfs_is_connected(int cell_a, int cell_b) {
-//        debug("bfs_is_connected(" + cell_a + ", " + cell_b + ")");
-        for (int i = 0; i < FULL_SIZE; i++) 
-            maze[VISITED][i] = VIRGIN;
-        maze[VISITED][cell_a] = VISITED;
-
-        int[] queue = new int[FULL_SIZE];
-        queue[0] = cell_a;
-        int head = 1;
-        int tail = 1;
-        int current = cell_a;
-
-        while (tail - head > 0) {
-//            print_debug();
-//            for (int i = head; i < tail; i++)
-//                System.out.print(queue[i]);
-//            System.out.println();
-            // If EAST is connected and not visited, enqueue.
-            // Unless it's the destination, in which case we return true;
-            if (maze[EAST][current] == 1) { 
-                debug(current + " is connected to " + (current + 1));
-                if (current + 1 == cell_b) {
-                    debug("arrived at destination");
-                    return true;
-                }
-                if (maze[VISITED][current + 1] == VIRGIN) {
-                    debug("enqueing " + (current + 1));
-                    maze[VISITED][current + 1] = TOUCHED;
-                    queue[tail++] = current + 1;
-                }
-            }
-            // If SOUTH is connected and not visited, enqueue.
-            // Unless it's the destination, in which case we return true.
-            if (maze[SOUTH][current] == 1) {
-                debug(current + " is connected to " + (current + SIZE));
-                if (current + SIZE == cell_b)
-                    return true;
-                if (maze[VISITED][current + SIZE] == VIRGIN) {
-                    debug("enqueing " + (current + SIZE));
-                    maze[VISITED][current + SIZE] = TOUCHED;
-                    queue[tail++] = current + SIZE;
-                }
-            }
-            // If WEST is connected and not visited, enqueue.
-            // Unless it's the destination, in which case we return true.
-            if (current % SIZE != 0) {
-                if (maze[EAST][current - 1] == 1) {
-                    debug(current + " is connected to " + (current - 1));
-                    if (current - 1 == cell_b)
-                        return true;
-                    if (maze[VISITED][current - 1] == VIRGIN) {
-                        debug("enqueing " + (current - 1));
-                        maze[VISITED][current - 1] = TOUCHED;
-                        queue[tail++] = current - 1;
-                    }
-                }
-            }
-            // If NORTH is connected and not visited, enqueue.
-            // Unless it's the destination, in which case we return true.
-            if (current - SIZE >= 0) {
-                if (maze[SOUTH][current - SIZE] == 1) {
-                    debug(current + " is connected to " + (current - SIZE));
-                    if (current - SIZE == cell_b)
-                        return true;
-                    if (maze[VISITED][current - SIZE] == VIRGIN) {
-                        debug("enqueing " + (current - SIZE));
-                        maze[VISITED][current - SIZE] = TOUCHED;
-                        queue[tail++] = current - 1;
-                    }
-                }
-            }
-            
-            // Mark visited and pop.
-            debug(current + " is now VISITED and we pop " + queue[head]);
-            maze[VISITED][current] = EXPLORED;
-            current = queue[head++];
-        }
-        return false;
-    }
+//    boolean bfs_is_connected(int cell_a, int cell_b) {
+////        debug("bfs_is_connected(" + cell_a + ", " + cell_b + ")");
+//        for (int i = 0; i < FULL_SIZE; i++) 
+//            maze[VISITED][i] = VIRGIN;
+//        maze[VISITED][cell_a] = VISITED;
+//
+//        int[] queue = new int[FULL_SIZE];
+//        queue[0] = cell_a;
+//        int head = 1;
+//        int tail = 1;
+//        int current = cell_a;
+//
+//        while (tail - head > 0) {
+////            print_debug();
+////            for (int i = head; i < tail; i++)
+////                System.out.print(queue[i]);
+////            System.out.println();
+//            // If EAST is connected and not visited, enqueue.
+//            // Unless it's the destination, in which case we return true;
+//            if (maze[EAST][current] == 1) { 
+//                debug(current + " is connected to " + (current + 1));
+//                if (current + 1 == cell_b) {
+//                    debug("arrived at destination");
+//                    return true;
+//                }
+//                if (maze[VISITED][current + 1] == VIRGIN) {
+//                    debug("enqueing " + (current + 1));
+//                    maze[VISITED][current + 1] = TOUCHED;
+//                    queue[tail++] = current + 1;
+//                }
+//            }
+//            // If SOUTH is connected and not visited, enqueue.
+//            // Unless it's the destination, in which case we return true.
+//            if (maze[SOUTH][current] == 1) {
+//                debug(current + " is connected to " + (current + SIZE));
+//                if (current + SIZE == cell_b)
+//                    return true;
+//                if (maze[VISITED][current + SIZE] == VIRGIN) {
+//                    debug("enqueing " + (current + SIZE));
+//                    maze[VISITED][current + SIZE] = TOUCHED;
+//                    queue[tail++] = current + SIZE;
+//                }
+//            }
+//            // If WEST is connected and not visited, enqueue.
+//            // Unless it's the destination, in which case we return true.
+//            if (current % SIZE != 0) {
+//                if (maze[EAST][current - 1] == 1) {
+//                    debug(current + " is connected to " + (current - 1));
+//                    if (current - 1 == cell_b)
+//                        return true;
+//                    if (maze[VISITED][current - 1] == VIRGIN) {
+//                        debug("enqueing " + (current - 1));
+//                        maze[VISITED][current - 1] = TOUCHED;
+//                        queue[tail++] = current - 1;
+//                    }
+//                }
+//            }
+//            // If NORTH is connected and not visited, enqueue.
+//            // Unless it's the destination, in which case we return true.
+//            if (current - SIZE >= 0) {
+//                if (maze[SOUTH][current - SIZE] == 1) {
+//                    debug(current + " is connected to " + (current - SIZE));
+//                    if (current - SIZE == cell_b)
+//                        return true;
+//                    if (maze[VISITED][current - SIZE] == VIRGIN) {
+//                        debug("enqueing " + (current - SIZE));
+//                        maze[VISITED][current - SIZE] = TOUCHED;
+//                        queue[tail++] = current - 1;
+//                    }
+//                }
+//            }
+//            
+//            // Mark visited and pop.
+//            debug(current + " is now VISITED and we pop " + queue[head]);
+//            maze[VISITED][current] = EXPLORED;
+//            current = queue[head++];
+//        }
+//        return false;
+//    }
     
     void print_debug() {
         StringBuilder output = new StringBuilder(SIZE*10);
@@ -282,7 +282,8 @@ class Maze {
     void print(int mode) {
         StringBuilder output = new StringBuilder(SIZE*10);
 
-        for (int col = 0; col < SIZE; col++)
+        output.append("+   ");
+        for (int col = 1; col < SIZE; col++)
             output.append("+---");
         output.append("+\n");
 
@@ -309,9 +310,9 @@ class Maze {
             output.append("\n");
         }
 
-        for (int col = 0; col < SIZE; col++)
+        for (int col = 0; col < SIZE - 1; col++)
             output.append("+---");
-        output.append("+\n");
+        output.append("+   +\n");
 
         System.out.println(output.toString());
     }
@@ -327,12 +328,16 @@ class Maze {
         for (int row = 0; row < SIZE; row++) {
             output.append("|");
             for (int col = 0; col < SIZE - 1; col++) {
+                int[] walls = count_walls(row * SIZE + col);
+                int count = walls[0] + walls[1] + walls[2] + walls[3];
                 if (maze[EAST][row * SIZE + col] == 1)
-                    output.append(" " + count_walls(row * SIZE + col) + "  ");
+                    output.append(" " + count + "  ");
                 else
-                    output.append(" " + count_walls(row * SIZE + col) + " |");
+                    output.append(" " + count + " |");
             }
-            output.append(" " + count_walls((row + 1) * SIZE - 1) + " |\n");
+            int[] walls = count_walls((row + 1) * SIZE - 1);
+            int count = walls[0] + walls[1] + walls[2] + walls[3];
+            output.append(" " + count + " |\n");
 
             if (row == SIZE - 1)
                 break;
@@ -357,11 +362,10 @@ class Maze {
 
 class MazeSolve {
     public static void main(String[] args) {
-        Maze maze = new Maze(5);
+        Maze maze = new Maze(18);
         //maze.randomise();
-        maze.print_debug();
         maze.print(2);
         maze.mazify();
-        //maze.print_count();
+        maze.print(2);
     }
 }
