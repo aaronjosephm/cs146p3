@@ -148,7 +148,9 @@ class Maze {
 
     void bfs_solve() {
         int[] queue = new int[FULL_SIZE];
-        int[] order = new int[FULL_SIZE];
+        char[] order = new char[FULL_SIZE];
+        for (int i = 0; i < FULL_SIZE; i++)
+            order[i] = ' ';
         int head = 1;
         int tail = 1;
         int current = 0;
@@ -159,11 +161,6 @@ class Maze {
             maze[VISITED][i] = VIRGIN;
 
         while (current != (FULL_SIZE - 1)) {
-            if (total_visited == (FULL_SIZE - 1)) {
-                System.out.println("Could not find a solution :(");
-                break;
-            }
-
             // EAST.
             destination = current + 1;
             if (destination % SIZE != 0)
@@ -205,19 +202,24 @@ class Maze {
                 break;
             }
 
-            order[current] = total_visited;
+            order[current] = (char)(total_visited % 10 + '0');
             total_visited++;
             maze[VISITED][current] = EXPLORED;
             current = queue[tail++];
             try {
-                this.print(order, "%3d");
-                Thread.sleep(1000);
+                this.print(order, " %c ");
+                Thread.sleep(100);
             } catch (Exception ignored) {}
         }
+        order[current] = (char)(total_visited % 10 + '0');
 
-        print(order, "%3d");
+        print(order, " %c ");
     }
 
+    void render_unsolvable() {
+        maze[EAST][FULL_SIZE - 2] = 0;
+        maze[SOUTH][FULL_SIZE - SIZE - 1] = 0;
+    }
 //    void print_debug() {
 //        StringBuilder output = new StringBuilder(SIZE*10);
 //
@@ -239,10 +241,10 @@ class Maze {
 //    }
 
     void print() {
-        print(new int[FULL_SIZE], "   ");
+        print(new char[FULL_SIZE], "   ");
     }
 
-    void print(int[] data, String format) {
+    void print(char[] filler, String format) {
         StringBuilder output = new StringBuilder(FULL_SIZE*10);
 
         output.append("+   ");
@@ -253,13 +255,13 @@ class Maze {
         for (int row = 0; row < SIZE; row++) {
             output.append("|");
             for (int col = 0; col < SIZE - 1; col++) {
-                output.append(String.format(format, data[row * SIZE + col]));
+                output.append(String.format(format, filler[row * SIZE + col]));
                 if (maze[EAST][row * SIZE + col] == 1)
                     output.append(" ");
                 else
                     output.append("|");
             }
-            output.append(String.format(format, data[(row + 1) * SIZE - 1]));
+            output.append(String.format(format, filler[(row + 1) * SIZE - 1]));
             output.append("|\n");
 
             if (row == SIZE - 1)
@@ -285,10 +287,12 @@ class Maze {
 
 class MazeSolve {
     public static void main(String[] args) {
-        Maze maze = new Maze(5);
+        Maze maze = new Maze(10);
         //maze.randomise();
         maze.print();
         maze.mazify();
+        maze.print();
+        maze.render_unsolvable();
         maze.print();
         maze.bfs_solve();
     }
